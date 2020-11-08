@@ -1,13 +1,18 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 #include "i2c.h"
+#include "rtc.h"
 #include "led.h"
 
 #define I2C_BITRATE 100000UL // 100kHz
+#define RTC_I2C_ADDR 0xA2
+
 
 int main() 
 {
   i2c_init(I2C_BITRATE); 
+  rtc_int0_init();
   led_init();
 
   sei();
@@ -20,4 +25,12 @@ int main()
   {
 
   }
+}
+
+ISR(INT0_vect)
+{
+  struct time curr_time = rtc_read_time(RTC_I2C_ADDR);
+  led_hour = curr_time.hour;
+  led_minute = curr_time.minute;
+  led_second = curr_time.second;
 }
