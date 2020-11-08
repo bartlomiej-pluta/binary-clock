@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <util/delay.h>
+#include "ptimer.h"
 #include "i2c.h"
 #include "rtc.h"
 #include "led.h"
@@ -11,6 +11,7 @@
 
 int main() 
 {
+  ptimer_init();
   i2c_init(I2C_BITRATE); 
   rtc_int0_init();
   led_init();
