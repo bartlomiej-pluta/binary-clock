@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name keystone)(type KiCad)(uri ${KIPRJMOD}/keystone.pretty)(options "")(descr ""))
+)

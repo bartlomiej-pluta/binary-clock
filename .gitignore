@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,atmelstudio,c++
-# Edit at https://www.toptal.com/developers/gitignore?templates=c,visualstudiocode,atmelstudio,c++
+# Created by https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,atmelstudio,c++,kicad
+# Edit at https://www.toptal.com/developers/gitignore?templates=c,visualstudiocode,atmelstudio,c++,kicad
 
 ### AtmelStudio ###
 ## Ignore Atmel Studio temporary files and build results
@@ -42,7 +42,6 @@
 *.pch
 
 # Libraries
-*.lib
 *.a
 *.la
 *.lo
@@ -94,12 +93,47 @@ dkms.conf
 
 # Executables
 
+### KiCad ###
+# For PCBs designed using KiCad: http://www.kicad-pcb.org/
+# Format documentation: http://kicad-pcb.org/help/file-formats/
+
+# Temporary files
+*.000
+*.bak
+*.bck
+*.kicad_pcb-bak
+*.sch-bak
+*~
+_autosave-*
+*.tmp
+*-save.pro
+*-save.kicad_pcb
+fp-info-cache
+
+# Netlist files (exported from Eeschema)
+*.net
+
+# Autorouter files (exported from Pcbnew)
+*.dsn
+*.ses
+
+# Exported BOM files
+*.xml
+*.csv
+
+### KiCad Patch ###
+rescue-backup/
+
+*.tsv
+bom/
+
+# Gerber export output
+out/
+
 ### VisualStudioCode ###
-.vscode/*
-.vscode/settings.json
-.vscode/tasks.json
-.vscode/launch.json
-.vscode/extensions.json
+*/.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
 *.code-workspace
 
 ### VisualStudioCode Patch ###
@@ -107,4 +141,4 @@ dkms.conf
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,atmelstudio,c++
+# End of https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,atmelstudio,c++,kicad

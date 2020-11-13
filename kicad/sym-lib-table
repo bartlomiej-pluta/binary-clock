@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name PCF8583)(type Legacy)(uri ${KIPRJMOD}/PCF8583.lib)(options "")(descr ""))
+  (lib (name Binary-Clock-rescue)(type Legacy)(uri "${KIPRJMOD}/Binary Clock-rescue.lib")(options "")(descr ""))
+)
