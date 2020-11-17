@@ -7,6 +7,7 @@
 #define KEY_INC_HOUR (1<<PB0)
 #define KEY_INC_MINUTE (1<<PB1)
 #define KEY_INC_SECOND (1<<PB2)
+#define KEY_INC_BRIGHTNESS (1<<PB3)
 
 void keyboard_init(void);
 void keyboard_handle_input(void);

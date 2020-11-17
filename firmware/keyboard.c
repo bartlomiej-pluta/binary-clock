@@ -4,7 +4,7 @@
 #include "rtc.h"
 #include "led.h"
 
-uint8_t k_inc_hour, k_inc_minute, k_inc_second;
+uint8_t k_inc_hour, k_inc_minute, k_inc_second, k_inc_brightness;
 
 void inc_hour(void)
 {
@@ -24,10 +24,16 @@ void inc_second(void)
   rtc_set_time(SECOND, led_second);
 }
 
+void inc_brightness(void)
+{
+  led_brightness <<= 1;
+  if(!led_brightness) led_brightness = 1;
+}
+
 void keyboard_init(void)
 {
-  KEYBOARD_DIR &= ~(KEY_INC_HOUR | KEY_INC_MINUTE | KEY_INC_SECOND);
-  PORTB |= KEY_INC_HOUR | KEY_INC_MINUTE | KEY_INC_SECOND;
+  KEYBOARD_DIR &= ~(KEY_INC_HOUR | KEY_INC_MINUTE | KEY_INC_SECOND | KEY_INC_BRIGHTNESS);
+  PORTB |= KEY_INC_HOUR | KEY_INC_MINUTE | KEY_INC_SECOND | KEY_INC_BRIGHTNESS;
 }
 
 void keyboard_handle_input(void)
@@ -35,4 +41,5 @@ void keyboard_handle_input(void)
   SuperDebounce(&k_inc_hour, &KEYBOARD_PIN, KEY_INC_HOUR, 20, 500, &inc_hour, &inc_hour);
   SuperDebounce(&k_inc_minute, &KEYBOARD_PIN, KEY_INC_MINUTE, 20, 500, &inc_minute, &inc_minute);
   SuperDebounce(&k_inc_second, &KEYBOARD_PIN, KEY_INC_SECOND, 20, 500, &inc_second, &inc_second);
+  SuperDebounce(&k_inc_brightness, &KEYBOARD_PIN, KEY_INC_BRIGHTNESS, 20, 500, &inc_brightness, &inc_brightness);
 }
