@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include "config.h"
 #include "keyboard.h"
 #include "debounce.h"
 #include "rtc.h"
@@ -26,8 +27,9 @@ void inc_second(void)
 
 void inc_brightness(void)
 {
-  led_brightness <<= 1;
-  if(!led_brightness) led_brightness = 1;
+  ram_cfg.led_brightness <<= 1;
+  if(!ram_cfg.led_brightness) ram_cfg.led_brightness = 1;
+  dump_ram2eem();
 }
 
 void keyboard_init(void)

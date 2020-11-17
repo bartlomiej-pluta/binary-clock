@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "config.h"
 #include "keyboard.h"
 #include "ptimer.h"
 #include "i2c.h"
@@ -10,6 +11,7 @@
 
 int main() 
 {
+  cfg_init();
   keyboard_init();
   ptimer_init();
   i2c_init(I2C_BITRATE); 

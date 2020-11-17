@@ -1,8 +1,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "config.h"
 #include "led.h"
 
-volatile uint8_t led_brightness = 1;
 volatile uint8_t led_hour;
 volatile uint8_t led_minute;
 volatile uint8_t led_second;
@@ -32,15 +32,15 @@ ISR(TIMER0_OVF_vect)
     {
       case 1: 
         LED_PORT = ~led_hour;   
-        ANODES_PORT = led_brightness >= pwm_counter ? ~HOUR_ANODE : 0xFF;
+        ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~HOUR_ANODE : 0xFF;
         break;
       case 2: 
         LED_PORT = ~led_minute;   
-        ANODES_PORT = led_brightness >= pwm_counter ? ~MINUTE_ANODE : 0xFF;  
+        ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~MINUTE_ANODE : 0xFF;  
         break;
       case 4: 
         LED_PORT = ~led_second;
-        ANODES_PORT = led_brightness >= pwm_counter ? ~SECOND_ANODE : 0xFF; 
+        ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~SECOND_ANODE : 0xFF; 
         break;
     }
 

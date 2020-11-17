@@ -10,7 +10,6 @@
 #define MINUTE_ANODE (1<<PD6)
 #define SECOND_ANODE (1<<PD7)
 
-extern volatile uint8_t led_brightness;
 extern volatile uint8_t led_hour;
 extern volatile uint8_t led_minute;
 extern volatile uint8_t led_second;
