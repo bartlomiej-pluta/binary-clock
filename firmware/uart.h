@@ -13,8 +13,11 @@
 
 void uart_init(void);
 char uart_getc(void);
+void uart_gets(char* buf);
 void uart_putc(char data);
 void uart_puts(char *str);
 void uart_puti(int16_t value, int16_t radix);
+void uart_bind_handler(void (*handler)(char* line));
+void uart_handle_event(char* buf);
 
 #endif
