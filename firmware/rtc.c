@@ -16,10 +16,16 @@ void rtc_int1_init(void)
   GICR |= (1<<INT1);
 }
 
-void rtc_set_time(uint8_t part, uint8_t value) 
+void rtc_set_time_part(uint8_t part, uint8_t value) 
 {  
   uint8_t bcd = DEC_2_BCD(value);
   i2c_writebuf(RTC_I2C_ADDR, part, 1, &bcd);
+}
+
+void rtc_set_time(struct TIME* time)
+{  
+  uint8_t buf[] = { DEC_2_BCD(time->second), DEC_2_BCD(time->minute), DEC_2_BCD(time->hour) };
+  i2c_writebuf(RTC_I2C_ADDR, SECOND, 3, buf); // SECOND is the first memory cell (0x02)
 }
 
 struct TIME rtc_read_time(void) 

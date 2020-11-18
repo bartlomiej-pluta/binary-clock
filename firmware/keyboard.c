@@ -10,26 +10,24 @@ uint8_t k_inc_hour, k_inc_minute, k_inc_second, k_inc_brightness;
 void inc_hour(void)
 {
   led_display.hour = (led_display.hour + 1) % 24;
-  rtc_set_time(HOUR, led_display.hour);
+  rtc_set_time_part(HOUR, led_display.hour);
 }
 
 void inc_minute(void)
 {
   led_display.minute = (led_display.minute + 1) % 60;
-  rtc_set_time(MINUTE, led_display.minute);
+  rtc_set_time_part(MINUTE, led_display.minute);
 }
 
 void inc_second(void)
 {
   led_display.second = (led_display.second + 1) % 60;
-  rtc_set_time(SECOND, led_display.second);
+  rtc_set_time_part(SECOND, led_display.second);
 }
 
 void inc_brightness(void)
 {
-  ram_cfg.led_brightness <<= 1;
-  if(!ram_cfg.led_brightness) ram_cfg.led_brightness = 1;
-  dump_ram2eem();
+  led_inc_btness();
 }
 
 void keyboard_init(void)

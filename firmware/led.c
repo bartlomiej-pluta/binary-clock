@@ -19,6 +19,20 @@ void led_init(void)
   TIMSK |= (1<<TOIE0);
 }
 
+void led_set_btness(uint8_t btness)
+{
+  ram_cfg.led_brightness = (1<<btness);
+  if(!ram_cfg.led_brightness) ram_cfg.led_brightness = 1;
+  dump_ram2eem();
+}
+
+void led_inc_btness(void)
+{
+  ram_cfg.led_brightness <<= 1;
+  if(!ram_cfg.led_brightness) ram_cfg.led_brightness = 1;
+  dump_ram2eem();
+}
+
 // 8 MHz / 256 = 31.25 kHz
 ISR(TIMER0_OVF_vect)
 {

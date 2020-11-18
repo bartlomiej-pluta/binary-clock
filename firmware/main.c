@@ -7,8 +7,13 @@
 #include "i2c.h"
 #include "rtc.h"
 #include "led.h"
+#include "at.h"
+
+#include "uart.h"
 
 #define I2C_BITRATE 100000UL // 100kHz
+
+char buffer[20];
 
 int main() 
 {
@@ -18,12 +23,15 @@ int main()
   i2c_init(I2C_BITRATE); 
   rtc_int0_init();
   led_init();
+  uart_init();
+  uart_bind_handler(at_handler);
 
   sei();
 
   while(1) 
   {
     keyboard_handle_input();
+    uart_handle_event(buffer);
   }
 }
 

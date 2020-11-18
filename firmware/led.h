@@ -15,5 +15,7 @@
 extern volatile struct TIME led_display;
 
 void led_init(void);
+void led_set_btness(uint8_t btness);
+void led_inc_btness(void);
 
 #endif

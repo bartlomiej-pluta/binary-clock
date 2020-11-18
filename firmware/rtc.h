@@ -21,7 +21,8 @@
 
 void rtc_int0_init(void);
 void rtc_int1_init(void);
-void rtc_set_time(uint8_t part, uint8_t value);
+void rtc_set_time(struct TIME* time);
+void rtc_set_time_part(uint8_t part, uint8_t value);
 struct TIME rtc_read_time(void);
 
 #endif
