@@ -3,9 +3,7 @@
 #include "config.h"
 #include "led.h"
 
-volatile uint8_t led_hour;
-volatile uint8_t led_minute;
-volatile uint8_t led_second;
+volatile struct TIME led_display = { 0, 0, 0 };
 
 void led_init(void) 
 {
@@ -31,15 +29,15 @@ ISR(TIMER0_OVF_vect)
   switch(curr_anode) 
   {
     case 1: 
-      LED_PORT = ~led_hour;   
+      LED_PORT = ~led_display.hour;   
       ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~HOUR_ANODE : 0xFF;
       break;
     case 2: 
-      LED_PORT = ~led_minute;   
+      LED_PORT = ~led_display.minute;   
       ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~MINUTE_ANODE : 0xFF;  
       break;
     case 4: 
-      LED_PORT = ~led_second;
+      LED_PORT = ~led_display.second;
       ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~SECOND_ANODE : 0xFF; 
       break;
   }

@@ -9,20 +9,20 @@ uint8_t k_inc_hour, k_inc_minute, k_inc_second, k_inc_brightness;
 
 void inc_hour(void)
 {
-  led_hour = (led_hour + 1) % 24;
-  rtc_set_time(HOUR, led_hour);
+  led_display.hour = (led_display.hour + 1) % 24;
+  rtc_set_time(HOUR, led_display.hour);
 }
 
 void inc_minute(void)
 {
-  led_minute = (led_minute + 1) % 60;
-  rtc_set_time(MINUTE, led_minute);
+  led_display.minute = (led_display.minute + 1) % 60;
+  rtc_set_time(MINUTE, led_display.minute);
 }
 
 void inc_second(void)
 {
-  led_second = (led_second + 1) % 60;
-  rtc_set_time(SECOND, led_second);
+  led_display.second = (led_display.second + 1) % 60;
+  rtc_set_time(SECOND, led_display.second);
 }
 
 void inc_brightness(void)

@@ -1,6 +1,8 @@
 #ifndef __LED_H__
 #define __LED_H__
 
+#include "time.h"
+
 #define LED_PORT PORTA
 #define LED_DIR DDRA
 
@@ -10,9 +12,7 @@
 #define MINUTE_ANODE (1<<PD6)
 #define SECOND_ANODE (1<<PD7)
 
-extern volatile uint8_t led_hour;
-extern volatile uint8_t led_minute;
-extern volatile uint8_t led_second;
+extern volatile struct TIME led_display;
 
 void led_init(void);
 

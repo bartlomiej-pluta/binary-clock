@@ -3,6 +3,7 @@
 #include "config.h"
 #include "keyboard.h"
 #include "ptimer.h"
+#include "time.h"
 #include "i2c.h"
 #include "rtc.h"
 #include "led.h"
@@ -20,10 +21,6 @@ int main()
 
   sei();
 
-  led_hour = 0;
-  led_minute = 0;
-  led_second = 0;  
-
   while(1) 
   {
     keyboard_handle_input();
@@ -32,8 +29,5 @@ int main()
 
 ISR(INT0_vect)
 {
-  struct TIME curr_time = rtc_read_time();
-  led_hour = curr_time.hour;
-  led_minute = curr_time.minute;
-  led_second = curr_time.second;
+  led_display = rtc_read_time();
 }
