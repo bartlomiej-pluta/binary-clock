@@ -16,12 +16,12 @@ void led_init(void)
   // Clear LEDs
   ANODES_PORT = HOUR_ANODE | MINUTE_ANODE | SECOND_ANODE;
   LED_PORT |= 0x3F; // 0b00111111
-
+  
   TCCR0 |= (1<<CS00);
   TIMSK |= (1<<TOIE0);
 }
 
-// ISR(TIMER0_COMP_vect) 
+// 8 MHz / 256 = 31.25 kHz
 ISR(TIMER0_OVF_vect)
 {
   static uint8_t pwm_counter = 0;
@@ -29,21 +29,22 @@ ISR(TIMER0_OVF_vect)
   static uint8_t curr_anode = 1;    
 
   switch(curr_anode) 
-    {
-      case 1: 
-        LED_PORT = ~led_hour;   
-        ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~HOUR_ANODE : 0xFF;
-        break;
-      case 2: 
-        LED_PORT = ~led_minute;   
-        ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~MINUTE_ANODE : 0xFF;  
-        break;
-      case 4: 
-        LED_PORT = ~led_second;
-        ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~SECOND_ANODE : 0xFF; 
-        break;
-    }
+  {
+    case 1: 
+      LED_PORT = ~led_hour;   
+      ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~HOUR_ANODE : 0xFF;
+      break;
+    case 2: 
+      LED_PORT = ~led_minute;   
+      ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~MINUTE_ANODE : 0xFF;  
+      break;
+    case 4: 
+      LED_PORT = ~led_second;
+      ANODES_PORT = ram_cfg.led_brightness >= pwm_counter ? ~SECOND_ANODE : 0xFF; 
+      break;
+  }
 
+  // 31.25 kHz / 250 = 125 Hz
   if(!counter)
   {    
     curr_anode <<= 1;

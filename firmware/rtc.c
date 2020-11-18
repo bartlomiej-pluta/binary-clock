@@ -22,12 +22,12 @@ void rtc_set_time(uint8_t part, uint8_t value)
   i2c_writebuf(RTC_I2C_ADDR, part, 1, &bcd);
 }
 
-struct time rtc_read_time(void) 
+struct TIME rtc_read_time(void) 
 {
   uint8_t buffer[3];
   i2c_readbuf(RTC_I2C_ADDR, 0x02, 3, buffer);
 
-  struct time curr_time = {
+  struct TIME curr_time = {
     BCD_2_DEC(buffer[2]),
     BCD_2_DEC(buffer[1]),
     BCD_2_DEC(buffer[0])

@@ -15,27 +15,27 @@ void SuperDebounce(uint8_t * key_state, volatile uint8_t *KPIN,
 
 	if( key_press && !*key_state ) {
 		*key_state = debounce;
-		timers[TIM_DEBOUNCE] = 15;
+		tim_debounce = 15;
 	} else
 	if( *key_state  ) {
 
-		if( key_press && debounce==*key_state && !timers[TIM_DEBOUNCE] ) {
+		if( key_press && debounce==*key_state && !tim_debounce ) {
 			*key_state = 2;
-			timers[TIM_DEBOUNCE]=5;
+			tim_debounce=5;
 		} else
 		if( !key_press && *key_state>1 && *key_state<4 ) {
 			if(push_proc) push_proc();						/* KEY_UP */
 			*key_state=idle;
 		} else
-		if( key_press && go_rep==*key_state && !timers[TIM_DEBOUNCE] ) {
+		if( key_press && go_rep==*key_state && !tim_debounce ) {
 			*key_state = wait_rep;
-			timers[TIM_DEBOUNCE]=rep_wait;
+			tim_debounce=rep_wait;
 		} else
-		if( key_press && wait_rep==*key_state && !timers[TIM_DEBOUNCE] ) {
+		if( key_press && wait_rep==*key_state && !tim_debounce ) {
 			*key_state = rep;
 		} else
-		if( key_press && rep==*key_state && !timers[TIM_DEBOUNCE] ) {
-			timers[TIM_DEBOUNCE] = rep_time;
+		if( key_press && rep==*key_state && !tim_debounce ) {
+			tim_debounce = rep_time;
 			if(rep_proc) rep_proc();						/* KEY_REP */
 		}
 	}

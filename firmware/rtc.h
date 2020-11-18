@@ -18,7 +18,7 @@
 #define DEC_2_BCD(dec) ((((dec) / 10) << 4) | ((dec) % 10))
 #define BCD_2_DEC(bcd) (((((bcd) >> 4) & 0x0F) * 10) + ((bcd) & 0x0F))
 
-struct time 
+struct TIME 
 {
   uint8_t hour;
   uint8_t minute;
@@ -28,6 +28,6 @@ struct time
 void rtc_int0_init(void);
 void rtc_int1_init(void);
 void rtc_set_time(uint8_t part, uint8_t value);
-struct time rtc_read_time(void);
+struct TIME rtc_read_time(void);
 
 #endif

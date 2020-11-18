@@ -2,22 +2,20 @@
 #include <avr/interrupt.h>
 #include "ptimer.h"
 
-volatile uint16_t timers[TIMERS_COUNT];
+volatile uint16_t tim_debounce;
 
 void ptimer_init(void)
 {
-  for(uint8_t i=0; i<TIMERS_COUNT; ++i) timers[i] = 0;
+  tim_debounce = 0;
 
-  TCCR2 |= (1<<WGM21); // CTC Mode
-	TCCR2 |= (1<<CS22) | (1<<CS21) | (1<<CS20); // Prescaler 1024
-	OCR2 = 78; // ~100Hz
-	TIMSK |= (1<<OCIE2); // Enable CTC interruptions
+  TCCR2 |= (1<<WGM21);
+  TCCR2 |= (1<<CS22) | (1<<CS21) | (1<<CS20);
+  OCR2 = 8000000UL/1024UL/100UL; // 8 MHz / prescaler / f (==100 Hz)
+  TIMSK |= (1<<OCIE2);
 }
 
+// ~100 Hz
 ISR(TIMER2_COMP_vect)
 {
-  for(uint8_t i=0; i<TIMERS_COUNT; ++i)
-  {
-    if(timers[i]) --timers[i];
-  }  
+  if(tim_debounce) --tim_debounce;
 }

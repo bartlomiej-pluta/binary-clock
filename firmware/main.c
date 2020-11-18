@@ -32,7 +32,7 @@ int main()
 
 ISR(INT0_vect)
 {
-  struct time curr_time = rtc_read_time();
+  struct TIME curr_time = rtc_read_time();
   led_hour = curr_time.hour;
   led_minute = curr_time.minute;
   led_second = curr_time.second;
