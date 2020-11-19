@@ -18,8 +18,8 @@ void at_handler(char* cmd);
 int8_t cmd_at_handler(uint8_t mode, char* arg);
 int8_t cmd_ati_handler(uint8_t mode, char* arg);
 int8_t cmd_at_rst_handler(uint8_t mode, char* arg);
-int8_t cmd_at_time_handler(uint8_t mode, char* arg);
-int8_t cmd_at_btnes_handler(uint8_t mode, char* arg);
+int8_t cmd_at_tim_handler(uint8_t mode, char* arg);
+int8_t cmd_at_bts_handler(uint8_t mode, char* arg);
 int8_t cmd_at_ngt_handler(uint8_t mode, char* arg);
 
 #define AT_NUM 6

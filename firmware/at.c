@@ -4,6 +4,7 @@
 #include <avr/wdt.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
+#include "common.h"
 #include "at.h"
 #include "uart.h"
 #include "config.h"
@@ -12,15 +13,17 @@
 #include "led.h"
 #include "rtc.h"
 
+#define PROJ_STR __PROJ_NAME " " __PROJ_REV " ::: " __PROJ_AUTHOR " " __PROJ_DATE
+
 #define UNUSED(X) (void)(X)
 
 const struct AT_CMD at_commands[AT_NUM] PROGMEM = {
-  { "AT", cmd_at_handler },
-  { "ATI", cmd_ati_handler },
-  { "AT+RST", cmd_at_rst_handler },
-  { "AT+TIM", cmd_at_time_handler },
-  { "AT+BTS", cmd_at_btnes_handler },
-  { "AT+NGT", cmd_at_ngt_handler }
+  { "AT",     cmd_at_handler      },
+  { "ATI",    cmd_ati_handler     },
+  { "AT+RST", cmd_at_rst_handler  },
+  { "AT+TIM", cmd_at_tim_handler  },
+  { "AT+BTS", cmd_at_bts_handler  },
+  { "AT+NGT", cmd_at_ngt_handler  }
 };
 
 void parse_at(char* at_cmd, char* arg, uint8_t mode)
@@ -87,7 +90,7 @@ int8_t cmd_ati_handler(uint8_t mode, char* arg)
 
   if(mode != M_NORM) return -1;
 
-  uart_puts_P(PSTR("Binary Clock v1.0 :: Bartlomiej Pluta 2020\r\n"));
+  uart_puts_P(PSTR(PROJ_STR "\r\n"));
   uart_puts_P(PSTR("compilation " __DATE__ " " __TIME__ "\n\r"));
   uart_puts_P(PSTR("avr-libc v" __AVR_LIBC_VERSION_STRING__ " " __AVR_LIBC_DATE_STRING__ "\n\r"));
 
@@ -107,7 +110,7 @@ int8_t cmd_at_rst_handler(uint8_t mode, char* arg)
   return 0;
 }
 
-int8_t cmd_at_time_handler(uint8_t mode, char* arg)
+int8_t cmd_at_tim_handler(uint8_t mode, char* arg)
 {  
   struct TIME_HMS n_time;
   char* val;
@@ -157,7 +160,7 @@ int8_t cmd_at_time_handler(uint8_t mode, char* arg)
   return 0;
 }
 
-int8_t cmd_at_btnes_handler(uint8_t mode, char* arg)
+int8_t cmd_at_bts_handler(uint8_t mode, char* arg)
 {
   uint8_t btnes;
 
