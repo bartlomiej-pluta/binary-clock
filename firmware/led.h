@@ -12,7 +12,8 @@
 #define MINUTE_ANODE (1<<PD6)
 #define SECOND_ANODE (1<<PD7)
 
-extern volatile struct TIME led_display;
+extern volatile struct TIME_HMS led_display;
+extern volatile uint8_t led_btnes;
 
 void led_init(void);
 void led_set_btness(uint8_t btness);

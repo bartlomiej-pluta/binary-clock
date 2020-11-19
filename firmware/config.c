@@ -3,7 +3,8 @@
 struct CFG ram_cfg;
 struct CFG eem_cfg EEMEM;
 const struct CFG pgm_cfg PROGMEM = {
-  LED_BRIGHTNESS
+  LED_BRIGHTNESS,
+  NIGHT_MODE
 };
 
 void map_eem2ram(void)

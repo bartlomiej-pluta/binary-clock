@@ -20,8 +20,9 @@ int8_t cmd_ati_handler(uint8_t mode, char* arg);
 int8_t cmd_at_rst_handler(uint8_t mode, char* arg);
 int8_t cmd_at_time_handler(uint8_t mode, char* arg);
 int8_t cmd_at_btnes_handler(uint8_t mode, char* arg);
+int8_t cmd_at_ngt_handler(uint8_t mode, char* arg);
 
-#define AT_NUM 5
+#define AT_NUM 6
 extern const struct AT_CMD at_commands[AT_NUM] PROGMEM;
 
 #endif

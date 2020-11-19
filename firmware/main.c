@@ -1,19 +1,19 @@
-#include <avr/io.h>
 #include <avr/interrupt.h>
-#include "config.h"
+#include <avr/io.h>
 #include "keyboard.h"
 #include "ptimer.h"
+#include "config.h"
+#include "nightm.h"
 #include "time.h"
+#include "uart.h"
 #include "i2c.h"
 #include "rtc.h"
 #include "led.h"
 #include "at.h"
 
-#include "uart.h"
-
 #define I2C_BITRATE 100000UL // 100kHz
 
-char buffer[20];
+void update_time(void);
 
 int main() 
 {
@@ -28,14 +28,30 @@ int main()
 
   sei();
 
+  char uart_buf[20];
+
   while(1) 
   {
     keyboard_handle_input();
-    uart_handle_event(buffer);
+    uart_handle_event(uart_buf);
+
+    update_time();    
   }
+}
+
+void update_time(void)
+{
+  if(!(GIFR & (1<<INTF0)))
+  {
+    struct TIME_HMS curr_time = rtc_read_time();
+    led_display = curr_time;
+    nightm_handle(&curr_time);
+  }
+  
+  GIFR |= 1<<INTF0;
 }
 
 ISR(INT0_vect)
 {
-  led_display = rtc_read_time();
+
 }

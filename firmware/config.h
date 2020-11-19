@@ -3,12 +3,24 @@
 
 #include <avr/eeprom.h>
 #include <avr/pgmspace.h>
+#include "time.h"
 
-#define LED_BRIGHTNESS 127
+#define AUTO_BTNES_SIZE 4
+
+#define LED_BRIGHTNESS 7
+#define NIGHT_MODE { -1, { 0, 0 }, { 0, 0 } }
+
+struct NIGHTM_CFG
+{
+  int8_t led_btnes;
+  struct TIME_HM begin;
+  struct TIME_HM end;
+};
 
 struct CFG
 {
   uint8_t led_brightness;
+  struct NIGHTM_CFG night_mode;
 };
 
 extern struct CFG ram_cfg;
