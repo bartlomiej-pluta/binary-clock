@@ -18,8 +18,8 @@ const struct AT_CMD at_commands[AT_NUM] PROGMEM = {
   { "AT", cmd_at_handler },
   { "ATI", cmd_ati_handler },
   { "AT+RST", cmd_at_rst_handler },
-  { "AT+TIME", cmd_at_time_handler },
-  { "AT+BTNES", cmd_at_btnes_handler },
+  { "AT+TIM", cmd_at_time_handler },
+  { "AT+BTS", cmd_at_btnes_handler },
   { "AT+NGT", cmd_at_ngt_handler }
 };
 
@@ -150,7 +150,7 @@ int8_t cmd_at_time_handler(uint8_t mode, char* arg)
 
       rtc_set_time(&time);
 
-      uart_puts("+TIME=");
+      uart_puts("+TIM=");
       uart_puti(time.hour, 10);
       uart_puts(",");
       uart_puti(time.minute, 10);
@@ -160,7 +160,7 @@ int8_t cmd_at_time_handler(uint8_t mode, char* arg)
       break;
 
     case M_NORM:
-      uart_puts("AT+TIME=(0-23),(0-59),(0-59)\r\n");
+      uart_puts("AT+TIM=(0-23),(0-59),(0-59)\r\n");
   }
 
   return 0;
@@ -168,12 +168,12 @@ int8_t cmd_at_time_handler(uint8_t mode, char* arg)
 
 int8_t cmd_at_btnes_handler(uint8_t mode, char* arg)
 {
-  uint8_t btness;
+  uint8_t btnes;
 
   switch(mode)
   {
     case M_GET:    
-      uart_puti(ram_cfg.led_brightness, 10);
+      uart_puti(ram_cfg.led_btnes, 10);
       uart_puts("\n\r");
 
       break;
@@ -181,18 +181,18 @@ int8_t cmd_at_btnes_handler(uint8_t mode, char* arg)
     case M_SET:
       if(!strlen(arg)) return -1;
 
-      btness = atoi(arg);
-      if(btness >= 8) return -1;
-      led_set_btness(btness);
+      btnes = atoi(arg);
+      if(btnes >= 8) return -1;
+      led_set_btnes(btnes);
 
-      uart_puts("+BTNES=");
+      uart_puts("+BTS=");
       uart_puts(arg);
       uart_puts("\n\r");
 
       break;
 
     case M_NORM:
-      uart_puts("AT+BTNES=(0-7)\n\r");
+      uart_puts("AT+BTS=(0-7)\n\r");
   }
 
   return 0;

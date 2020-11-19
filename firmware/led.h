@@ -16,7 +16,7 @@ extern volatile struct TIME_HMS led_display;
 extern volatile uint8_t led_btnes;
 
 void led_init(void);
-void led_set_btness(uint8_t btness);
-void led_inc_btness(void);
+void led_set_btnes(uint8_t btnes);
+void led_inc_btnes(void);
 
 #endif

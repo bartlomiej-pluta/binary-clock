@@ -9,7 +9,7 @@
 
 struct AT_CMD
 {
-  char cmd[8];
+  char cmd[7];
   int8_t (*handler)(uint8_t mode, char* arg);
 };
 

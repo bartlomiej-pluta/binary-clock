@@ -9,7 +9,7 @@ volatile uint8_t led_btnes;
 void led_init(void) 
 {
   // Set brightness
-  led_btnes = 1<<(ram_cfg.led_brightness);
+  led_btnes = 1<<(ram_cfg.led_btnes);
 
   // Set outputs
   ANODES_DIR |= HOUR_ANODE | MINUTE_ANODE | SECOND_ANODE; 
@@ -23,18 +23,18 @@ void led_init(void)
   TIMSK |= (1<<TOIE0);
 }
 
-void led_set_btness(uint8_t btnes)
+void led_set_btnes(uint8_t btnes)
 {
   if(btnes > 7) btnes = 0;
   led_btnes = 1<<btnes;  
-  ram_cfg.led_brightness = btnes;
+  ram_cfg.led_btnes = btnes;
   dump_ram2eem();
 }
 
-void led_inc_btness(void)
+void led_inc_btnes(void)
 {
-  if(++(ram_cfg.led_brightness) > 7) ram_cfg.led_brightness = 0;
-  led_btnes = 1<<(ram_cfg.led_brightness);
+  if(++(ram_cfg.led_btnes) > 7) ram_cfg.led_btnes = 0;
+  led_btnes = 1<<(ram_cfg.led_btnes);
   dump_ram2eem();
 }
 

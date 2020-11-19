@@ -19,7 +19,7 @@ struct NIGHTM_CFG
 
 struct CFG
 {
-  uint8_t led_brightness;
+  uint8_t led_btnes;
   struct NIGHTM_CFG night_mode;
 };
 

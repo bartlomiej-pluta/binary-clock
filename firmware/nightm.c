@@ -19,6 +19,6 @@ void nightm_handle(struct TIME_HMS* curr_time)
 
     led_btnes = (begin <= current && current < end)
     ? 1<<(ram_cfg.night_mode.led_btnes)
-    : 1<<(ram_cfg.led_brightness);
+    : 1<<(ram_cfg.led_btnes);
   }
 }

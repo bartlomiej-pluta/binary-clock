@@ -27,7 +27,7 @@ void inc_second(void)
 
 void inc_brightness(void)
 {
-  led_inc_btness();
+  led_inc_btnes();
 }
 
 void keyboard_init(void)
