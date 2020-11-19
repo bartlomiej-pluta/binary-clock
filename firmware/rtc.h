@@ -19,10 +19,12 @@
 #define DEC_2_BCD(dec) ((((dec) / 10) << 4) | ((dec) % 10))
 #define BCD_2_DEC(bcd) (((((bcd) >> 4) & 0x0F) * 10) + ((bcd) & 0x0F))
 
+extern volatile struct TIME_HMS time;
+
 void rtc_int0_init(void);
 void rtc_int1_init(void);
 void rtc_set_time(struct TIME_HMS* time);
 void rtc_set_time_part(uint8_t part, uint8_t value);
-struct TIME_HMS rtc_read_time(void);
+uint8_t rtc_handle_timer(void);
 
 #endif

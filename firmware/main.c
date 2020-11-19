@@ -13,7 +13,6 @@
 
 #define I2C_BITRATE 100000UL // 100kHz
 
-void update_time(void);
 
 int main() 
 {
@@ -35,23 +34,6 @@ int main()
     keyboard_handle_input();
     uart_handle_event(uart_buf);
 
-    update_time();    
+    if(rtc_handle_timer()) nightm_handle();
   }
-}
-
-void update_time(void)
-{
-  if(!(GIFR & (1<<INTF0)))
-  {
-    struct TIME_HMS curr_time = rtc_read_time();
-    led_display = curr_time;
-    nightm_handle(&curr_time);
-  }
-  
-  GIFR |= 1<<INTF0;
-}
-
-ISR(INT0_vect)
-{
-
 }

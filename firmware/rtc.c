@@ -1,6 +1,9 @@
+#include <avr/interrupt.h>
 #include <avr/io.h>
 #include "rtc.h"
 #include "i2c.h"
+
+volatile struct TIME_HMS time;
 
 void rtc_int0_init(void)
 {
@@ -40,4 +43,21 @@ struct TIME_HMS rtc_read_time(void)
   };
 
   return curr_time;
+}
+
+uint8_t rtc_handle_timer(void)
+{
+  if(!(GIFR & (1<<INTF0)))
+  {
+    time = rtc_read_time();
+    GIFR |= 1<<INTF0;
+    return 1;
+  }
+
+  return 0;
+}
+
+ISR(INT0_vect)
+{
+
 }

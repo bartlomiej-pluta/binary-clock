@@ -5,6 +5,6 @@
 #include "time.h"
 
 void nightm_config(struct NIGHTM_CFG* cfg);
-void nightm_handle(struct TIME_HMS* curr_time);
+void nightm_handle(void);
 
 #endif

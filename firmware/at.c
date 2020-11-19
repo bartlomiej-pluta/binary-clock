@@ -108,15 +108,14 @@ int8_t cmd_at_rst_handler(uint8_t mode, char* arg)
 }
 
 int8_t cmd_at_time_handler(uint8_t mode, char* arg)
-{
-  struct TIME_HMS time;
+{  
+  struct TIME_HMS n_time;
   char* val;
   char* tail;
 
   switch(mode)
   {
-    case M_GET:
-      time = rtc_read_time();
+    case M_GET:      
       uart_puti(time.hour, 10);
       uart_putc(':');
       uart_puti(time.minute, 10);
@@ -125,22 +124,22 @@ int8_t cmd_at_time_handler(uint8_t mode, char* arg)
       uart_puts("\n\r");
       break;
     
-    case M_SET:
+    case M_SET:      
       if(!strlen(arg)) return -1;
 
       val = strtok_r(arg, ",", &tail);
-      time.hour = atoi(val);
-      if(time.hour >= 24) return -1;
+      n_time.hour = atoi(val);
+      if(n_time.hour >= 24) return -1;
 
       val = strtok_r(NULL, ",", &tail);
-      time.minute = atoi(val);
-      if(time.minute >= 60) return -1;
+      n_time.minute = atoi(val);
+      if(n_time.minute >= 60) return -1;
 
       val = strtok_r(NULL, ",", &tail);
-      time.second = atoi(val);
-      if(time.second >= 60) return -1;
+      n_time.second = atoi(val);
+      if(n_time.second >= 60) return -1;
 
-      rtc_set_time(&time);
+      rtc_set_time(&n_time);
 
       uart_puts_P(PSTR("+TIM="));
       uart_puti(time.hour, 10);

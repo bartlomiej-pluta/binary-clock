@@ -2,8 +2,8 @@
 #include <avr/interrupt.h>
 #include "config.h"
 #include "led.h"
+#include "rtc.h"
 
-volatile struct TIME_HMS led_display = { 0, 0, 0 };
 volatile uint8_t led_btnes;
 
 void led_init(void) 
@@ -48,15 +48,15 @@ ISR(TIMER0_OVF_vect)
   switch(curr_anode) 
   {
     case 1: 
-      LED_PORT = ~led_display.hour;   
+      LED_PORT = ~time.hour;   
       ANODES_PORT = led_btnes >= pwm_counter ? ~HOUR_ANODE : 0xFF;
       break;
     case 2: 
-      LED_PORT = ~led_display.minute;   
+      LED_PORT = ~time.minute;   
       ANODES_PORT = led_btnes >= pwm_counter ? ~MINUTE_ANODE : 0xFF;  
       break;
     case 4: 
-      LED_PORT = ~led_display.second;
+      LED_PORT = ~time.second;
       ANODES_PORT = led_btnes >= pwm_counter ? ~SECOND_ANODE : 0xFF; 
       break;
   }
