@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/pgmspace.h>
 #include <stdlib.h>
 #include "uart.h"
 
@@ -43,6 +44,12 @@ void uart_puts(char* str)
 {
   register char c;
   while ((c = *str++)) uart_putc(c);
+}
+
+void uart_puts_P(const char *str)
+{
+  register char c;
+  while ((c = pgm_read_byte(str++))) uart_putc(c);  
 }
 
 void uart_puti(int16_t value, int16_t radix)

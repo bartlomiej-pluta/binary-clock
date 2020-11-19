@@ -45,7 +45,7 @@ void parse_at(char* at_cmd, char* arg, uint8_t mode)
     }
   }
 
-  if(!ok) uart_puts("ERROR\n\r");
+  if(!ok) uart_puts_P(PSTR("ERROR\n\r"));
 }
 
 void at_handler(char* cmd)
@@ -76,7 +76,7 @@ int8_t cmd_at_handler(uint8_t mode, char* arg)
 
   if(mode != M_NORM) return -1;
 
-  uart_puts("OK\r\n");
+  uart_puts_P(PSTR("OK\r\n"));
 
   return 0;
 }
@@ -87,17 +87,9 @@ int8_t cmd_ati_handler(uint8_t mode, char* arg)
 
   if(mode != M_NORM) return -1;
 
-  uart_puts("Binary Clock v1.0 :: Bartlomiej Pluta 2020\r\n");
-  uart_puts("compilation ");
-  uart_puts(__DATE__);
-  uart_putc(' ');
-  uart_puts(__TIME__);
-  uart_puts("\n\r");
-  uart_puts("avr-libc v");
-  uart_puts(__AVR_LIBC_VERSION_STRING__);
-  uart_putc(' ');
-  uart_puts(__AVR_LIBC_DATE_STRING__);
-  uart_puts("\n\r");
+  uart_puts_P(PSTR("Binary Clock v1.0 :: Bartlomiej Pluta 2020\r\n"));
+  uart_puts_P(PSTR("compilation " __DATE__ " " __TIME__ "\n\r"));
+  uart_puts_P(PSTR("avr-libc v" __AVR_LIBC_VERSION_STRING__ " " __AVR_LIBC_DATE_STRING__ "\n\r"));
 
   return 0;
 }
@@ -150,7 +142,7 @@ int8_t cmd_at_time_handler(uint8_t mode, char* arg)
 
       rtc_set_time(&time);
 
-      uart_puts("+TIM=");
+      uart_puts_P(PSTR("+TIM="));
       uart_puti(time.hour, 10);
       uart_puts(",");
       uart_puti(time.minute, 10);
@@ -160,7 +152,7 @@ int8_t cmd_at_time_handler(uint8_t mode, char* arg)
       break;
 
     case M_NORM:
-      uart_puts("AT+TIM=(0-23),(0-59),(0-59)\r\n");
+      uart_puts_P(PSTR("AT+TIM=(0-23),(0-59),(0-59)\r\n"));
   }
 
   return 0;
@@ -185,14 +177,14 @@ int8_t cmd_at_btnes_handler(uint8_t mode, char* arg)
       if(btnes >= 8) return -1;
       led_set_btnes(btnes);
 
-      uart_puts("+BTS=");
+      uart_puts_P(PSTR("+BTS="));
       uart_puts(arg);
       uart_puts("\n\r");
 
       break;
 
     case M_NORM:
-      uart_puts("AT+BTS=(0-7)\n\r");
+      uart_puts_P(PSTR("AT+BTS=(0-7)\n\r"));
   }
 
   return 0;
@@ -208,7 +200,7 @@ int8_t cmd_at_ngt_handler(uint8_t mode, char* arg)
   {
     case M_GET:
       uart_puti(ram_cfg.night_mode.led_btnes, 10);
-      uart_puts(ram_cfg.night_mode.led_btnes >= 0 ? " (EN)\n\r" : " (DIS)\n\r");
+      uart_puts_P(ram_cfg.night_mode.led_btnes >= 0 ? PSTR(" (EN)\n\r") : PSTR(" (DIS)\n\r"));
       uart_puti(ram_cfg.night_mode.begin.hour, 10);
       uart_puts(":");
       uart_puti(ram_cfg.night_mode.begin.minute, 10);
@@ -244,7 +236,7 @@ int8_t cmd_at_ngt_handler(uint8_t mode, char* arg)
 
       nightm_config(&nightm_cfg);
 
-      uart_puts("+NGT=");
+      uart_puts_P(PSTR("+NGT="));
       uart_puti(nightm_cfg.led_btnes, 10);
       uart_puts(",");
       uart_puti(nightm_cfg.begin.hour, 10);
@@ -258,7 +250,7 @@ int8_t cmd_at_ngt_handler(uint8_t mode, char* arg)
       break;
 
     case M_NORM:
-      uart_puts("AT+NGT=(-1|0-7),(0-23),(0-59),(0-23),(0-59)");
+      uart_puts_P(PSTR("AT+NGT=(-1|0-7),(0-23),(0-59),(0-23),(0-59)\n\r"));
   }
 
   return 0;
