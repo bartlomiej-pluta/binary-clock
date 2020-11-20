@@ -13,6 +13,7 @@
 
 #define I2C_BITRATE 100000UL // 100kHz
 
+void update_time(struct RTC_DATA* rtc);
 
 int main() 
 {
@@ -23,17 +24,27 @@ int main()
   rtc_int0_init();
   led_init();
   uart_init();
+  
   uart_bind_handler(at_handler);
+  rtc_bind_handler(update_time);
 
-  sei();
+  led_set_btnes(ram_cfg.led_btnes);
 
   char uart_buf[20];
 
+  sei();  
+  
   while(1) 
   {
     kbd_handle_event();
     uart_handle_event(uart_buf);
-
-    if(rtc_handle_clock()) nightm_handle();
+    rtc_handle_event();    
   }
+}
+
+void update_time(struct RTC_DATA* rtc)
+{
+  led_display((struct LED_DIGS*) &rtc->time);
+  at_update_rtc_data(rtc);
+  nightm_handle(rtc);
 }

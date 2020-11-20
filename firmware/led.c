@@ -2,40 +2,33 @@
 #include <avr/interrupt.h>
 #include "config.h"
 #include "led.h"
-#include "rtc.h"
 
-volatile uint8_t led_btnes;
+static volatile uint8_t led_btnes;
+
+static struct LED_DIGS display;
 
 void led_init(void) 
 {
-  // Set brightness
-  led_btnes = 1<<(ram_cfg.led_btnes);
-
   // Set outputs
-  ANODES_DIR |= HOUR_ANODE | MINUTE_ANODE | SECOND_ANODE; 
+  ANODES_DIR |= DIG0_ANODE | DIG1_ANODE | DIG2_ANODE; 
   LED_DIR |= 0x3F; // 0b00111111
 
   // Clear LEDs
-  ANODES_PORT = HOUR_ANODE | MINUTE_ANODE | SECOND_ANODE;
+  ANODES_PORT = DIG0_ANODE | DIG1_ANODE | DIG2_ANODE;
   LED_PORT |= 0x3F; // 0b00111111
   
   TCCR0 |= (1<<CS00);
   TIMSK |= (1<<TOIE0);
 }
 
-void led_set_btnes(uint8_t btnes)
+void led_display(struct LED_DIGS* digits)
 {
-  if(btnes > 7) btnes = 0;
-  led_btnes = 1<<btnes;  
-  ram_cfg.led_btnes = btnes;
-  dump_ram2eem();
+  display = *digits;
 }
 
-void led_inc_btnes(void)
+void led_set_btnes(uint8_t btnes)
 {
-  if(++(ram_cfg.led_btnes) > 7) ram_cfg.led_btnes = 0;
-  led_btnes = 1<<(ram_cfg.led_btnes);
-  dump_ram2eem();
+  led_btnes = 1<<btnes;  
 }
 
 // 8 MHz / 256 = 31.25 kHz
@@ -48,16 +41,16 @@ ISR(TIMER0_OVF_vect)
   switch(curr_anode) 
   {
     case 1: 
-      LED_PORT = ~clock.hour;   
-      ANODES_PORT = led_btnes >= pwm_counter ? ~HOUR_ANODE : 0xFF;
+      LED_PORT = ~display.dig0;   
+      ANODES_PORT = led_btnes >= pwm_counter ? ~DIG0_ANODE : 0xFF;
       break;
     case 2: 
-      LED_PORT = ~clock.minute;   
-      ANODES_PORT = led_btnes >= pwm_counter ? ~MINUTE_ANODE : 0xFF;  
+      LED_PORT = ~display.dig1;   
+      ANODES_PORT = led_btnes >= pwm_counter ? ~DIG1_ANODE : 0xFF;  
       break;
     case 4: 
-      LED_PORT = ~clock.second;
-      ANODES_PORT = led_btnes >= pwm_counter ? ~SECOND_ANODE : 0xFF; 
+      LED_PORT = ~display.dig2;
+      ANODES_PORT = led_btnes >= pwm_counter ? ~DIG2_ANODE : 0xFF; 
       break;
   }
 

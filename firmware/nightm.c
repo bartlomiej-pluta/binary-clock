@@ -1,25 +1,23 @@
 #include "nightm.h"
+#include "ptimer.h"
 #include "led.h"
 #include "rtc.h"
 
-#define TIME2INT(TIME) ((TIME).hour*60 + (TIME).minute)
+#define TIMER_FREQ 100  // ptimer works with 100Hz so it's going to reduce time to 1Hz = 1s
 
 void nightm_config(struct NIGHTM_CFG* cfg)
 {  
-  ram_cfg.night_mode = *cfg;
-  dump_ram2eem();
+  ram_cfg.night_mode = *cfg;  
 }
 
-void nightm_handle(void)
+void nightm_handle(struct RTC_DATA* rtc)
 {  
   if(ram_cfg.night_mode.led_btnes >= 0)
   {
-    uint16_t current = TIME2INT(clock);  
-    uint16_t begin = TIME2INT(ram_cfg.night_mode.begin);
-    uint16_t end = TIME2INT(ram_cfg.night_mode.end);
+    uint16_t current = TIME_2_INT(rtc->time);  
+    uint16_t begin = TIME_2_INT(ram_cfg.night_mode.begin);
+    uint16_t end = TIME_2_INT(ram_cfg.night_mode.end);
 
-    led_btnes = (begin <= current && current < end)
-    ? 1<<(ram_cfg.night_mode.led_btnes)
-    : 1<<(ram_cfg.led_btnes);
+    led_set_btnes((begin <= current && current < end) ? ram_cfg.night_mode.led_btnes : ram_cfg.led_btnes);    
   }
 }

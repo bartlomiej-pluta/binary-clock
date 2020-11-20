@@ -9,22 +9,24 @@ uint8_t k_inc_hour, k_inc_minute, k_inc_second, k_inc_brightness;
 
 void inc_hour(void)
 {
-  rtc_set_clock_part(HOUR, (clock.hour + 1) % 24);
+  rtc_inc_time(HOUR);
 }
 
 void inc_minute(void)
 {
-  rtc_set_clock_part(MINUTE, (clock.minute + 1) % 60);
+  rtc_inc_time(MINUTE);
 }
 
 void inc_second(void)
 {
-  rtc_set_clock_part(SECOND, (clock.second + 1) % 60);
+  rtc_inc_time(SECOND);
 }
 
 void inc_brightness(void)
 {
-  led_inc_btnes();
+  if(++ram_cfg.led_btnes > 7) ram_cfg.led_btnes = 0;
+  led_set_btnes(ram_cfg.led_btnes);
+  dump_ram2eem();
 }
 
 void kbd_init(void)

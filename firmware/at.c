@@ -11,20 +11,31 @@
 #include "nightm.h"
 #include "time.h"
 #include "led.h"
-#include "rtc.h"
 
 #define PROJ_STR __PROJ_NAME " " __PROJ_REV " ::: " __PROJ_AUTHOR " " __PROJ_DATE
 
 #define UNUSED(X) (void)(X)
 
+int8_t cmd_at_handler(uint8_t mode, char* arg);
+int8_t cmd_ati_handler(uint8_t mode, char* arg);
+int8_t cmd_at_rst_handler(uint8_t mode, char* arg);
+int8_t cmd_at_tim_handler(uint8_t mode, char* arg);
+int8_t cmd_at_dat_handler(uint8_t mode, char* arg);
+int8_t cmd_at_bts_handler(uint8_t mode, char* arg);
+int8_t cmd_at_ngt_handler(uint8_t mode, char* arg);
+
+#define AT_NUM 7
 const struct AT_CMD at_commands[AT_NUM] PROGMEM = {
   { "AT",     cmd_at_handler      },
   { "ATI",    cmd_ati_handler     },
   { "AT+RST", cmd_at_rst_handler  },
   { "AT+TIM", cmd_at_tim_handler  },
+  { "AT+DAT", cmd_at_dat_handler  },
   { "AT+BTS", cmd_at_bts_handler  },
   { "AT+NGT", cmd_at_ngt_handler  }
 };
+
+static struct RTC_DATA* rtc_data;
 
 void parse_at(char* at_cmd, char* arg, uint8_t mode)
 {  
@@ -73,6 +84,11 @@ void at_handler(char* cmd)
   }
 }
 
+void at_update_rtc_data(struct RTC_DATA* rtc)
+{
+  rtc_data = rtc;
+}
+
 int8_t cmd_at_handler(uint8_t mode, char* arg)
 {
   UNUSED(arg);
@@ -119,11 +135,7 @@ int8_t cmd_at_tim_handler(uint8_t mode, char* arg)
   switch(mode)
   {
     case M_GET:      
-      uart_puti(clock.hour, 10);
-      uart_putc(':');
-      uart_puti(clock.minute, 10);
-      uart_putc(':');
-      uart_puti(clock.second, 10);
+      uart_puts(rtc_data->time_str);
       uart_puts("\n\r");
       break;
     
@@ -142,20 +154,66 @@ int8_t cmd_at_tim_handler(uint8_t mode, char* arg)
       time.second = atoi(val);
       if(time.second >= 60) return -1;
 
-      rtc_set_clock(&time);
+      rtc_set_time(&time);
 
       uart_puts_P(PSTR("+TIM="));
-      uart_puti(clock.hour, 10);
-      uart_puts(",");
-      uart_puti(clock.minute, 10);
-      uart_puts(",");
-      uart_puti(clock.second, 10);
+      uart_puti(time.hour, 10);
+      uart_putc(',');
+      uart_puti(time.minute, 10);
+      uart_putc(',');
+      uart_puti(time.second, 10);
       uart_puts("\n\r");
       break;
 
     case M_NORM:
       uart_puts_P(PSTR("AT+TIM=(0-23),(0-59),(0-59)\r\n"));
   }
+
+  return 0;
+}
+
+int8_t cmd_at_dat_handler(uint8_t mode, char* arg)
+{
+  struct DATE_YMD date;
+  char* val;
+  char* tail;
+
+  switch(mode)
+  {
+    case M_GET:      
+      uart_puts(rtc_data->date_str);
+      uart_puts("\n\r");
+      break;
+    
+    case M_SET:      
+      if(!strlen(arg)) return -1;
+
+      val = strtok_r(arg, ",", &tail);
+      date.day = atoi(val);
+      if(date.day < 1 || 31 < date.day) return -1;
+
+      val = strtok_r(NULL, ",", &tail);
+      date.month = atoi(val);
+      if(date.month < 1 || 12 < date.month) return -1;
+
+      val = strtok_r(NULL, ",", &tail);
+      date.year = atoi(val);            
+
+      rtc_set_date(&date);
+
+      uart_puts_P(PSTR("+DAT="));
+      uart_puti(date.day, 10);
+      uart_putc(',');
+      uart_puti(date.month, 10);
+      uart_putc(',');
+      uart_puti(date.year, 10);
+      uart_puts("\n\r");
+      break;
+
+    case M_NORM:
+      uart_puts_P(PSTR("AT+DAT=(1-31),(1-12),(0-65535)\r\n"));
+  }
+
 
   return 0;
 }
@@ -176,8 +234,9 @@ int8_t cmd_at_bts_handler(uint8_t mode, char* arg)
       if(!strlen(arg)) return -1;
 
       btnes = atoi(arg);
-      if(btnes >= 8) return -1;
-      led_set_btnes(btnes);
+      if(btnes >= 8) return -1;      
+      led_set_btnes(ram_cfg.led_btnes = btnes);
+      dump_ram2eem();
 
       uart_puts_P(PSTR("+BTS="));
       uart_puts(arg);
@@ -237,6 +296,7 @@ int8_t cmd_at_ngt_handler(uint8_t mode, char* arg)
       if(nightm_cfg.end.minute > 59) return -1;
 
       nightm_config(&nightm_cfg);
+      dump_ram2eem();
 
       uart_puts_P(PSTR("+NGT="));
       uart_puti(nightm_cfg.led_btnes, 10);

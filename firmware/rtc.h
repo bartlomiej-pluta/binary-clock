@@ -5,9 +5,7 @@
 
 #define RTC_I2C_ADDR 0xA2
 
-#define SECOND 0x02
-#define MINUTE 0x03
-#define HOUR 0x04
+#define DATE_SEPARATOR '.'
 
 #define INT0_PORT PORTD
 #define INT0_DIR DDRD
@@ -16,15 +14,24 @@
 #define INT1_DIR DDRD
 #define INT1_PIN PD3
 
-#define DEC_2_BCD(dec) ((((dec) / 10) << 4) | ((dec) % 10))
-#define BCD_2_DEC(bcd) (((((bcd) >> 4) & 0x0F) * 10) + ((bcd) & 0x0F))
+#define SECOND 0x02
+#define MINUTE 0x03
+#define HOUR 0x04
 
-extern volatile struct TIME_HMS clock;
+struct RTC_DATA
+{
+  struct TIME_HMS time;
+  struct DATE_YMDW date;
+  char time_str[9];
+  char date_str[11];
+  uint8_t buffer[5];
+};
 
 void rtc_int0_init(void);
-void rtc_int1_init(void);
-void rtc_set_clock(struct TIME_HMS* time);
-void rtc_set_clock_part(uint8_t part, uint8_t value);
-uint8_t rtc_handle_clock(void);
+void rtc_bind_handler(void (*handler)(struct RTC_DATA* clock));
+void rtc_set_time(struct TIME_HMS* time);
+void rtc_set_date(struct DATE_YMD* date);
+void rtc_inc_time(uint8_t part);
+void rtc_handle_event(void);
 
 #endif

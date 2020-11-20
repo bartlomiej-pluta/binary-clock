@@ -2,6 +2,7 @@
 #define __AT_H__
 
 #include <avr/pgmspace.h>
+#include "rtc.h"
 
 #define M_SET 0
 #define M_GET 1
@@ -14,15 +15,6 @@ struct AT_CMD
 };
 
 void at_handler(char* cmd);
-
-int8_t cmd_at_handler(uint8_t mode, char* arg);
-int8_t cmd_ati_handler(uint8_t mode, char* arg);
-int8_t cmd_at_rst_handler(uint8_t mode, char* arg);
-int8_t cmd_at_tim_handler(uint8_t mode, char* arg);
-int8_t cmd_at_bts_handler(uint8_t mode, char* arg);
-int8_t cmd_at_ngt_handler(uint8_t mode, char* arg);
-
-#define AT_NUM 6
-extern const struct AT_CMD at_commands[AT_NUM] PROGMEM;
+void at_update_rtc_data(struct RTC_DATA* rtc);
 
 #endif

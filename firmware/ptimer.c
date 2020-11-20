@@ -17,5 +17,5 @@ void ptimer_init(void)
 // ~100 Hz
 ISR(TIMER2_COMP_vect)
 {
-  if(tim_debounce) --tim_debounce;
+  if(tim_debounce) --tim_debounce;  
 }
