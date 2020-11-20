@@ -17,7 +17,7 @@
 int main() 
 {
   cfg_init();
-  keyboard_init();
+  kbd_init();
   ptimer_init();
   i2c_init(I2C_BITRATE); 
   rtc_int0_init();
@@ -31,9 +31,9 @@ int main()
 
   while(1) 
   {
-    keyboard_handle_input();
+    kbd_handle_event();
     uart_handle_event(uart_buf);
 
-    if(rtc_handle_timer()) nightm_handle();
+    if(rtc_handle_clock()) nightm_handle();
   }
 }

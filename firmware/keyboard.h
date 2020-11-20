@@ -9,7 +9,7 @@
 #define KEY_INC_SECOND (1<<PB2)
 #define KEY_INC_BRIGHTNESS (1<<PB3)
 
-void keyboard_init(void);
-void keyboard_handle_input(void);
+void kbd_init(void);
+void kbd_handle_event(void);
 
 #endif

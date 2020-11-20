@@ -3,7 +3,7 @@
 #include "rtc.h"
 #include "i2c.h"
 
-volatile struct TIME_HMS time;
+volatile struct TIME_HMS clock;
 
 void rtc_int0_init(void)
 {
@@ -19,37 +19,33 @@ void rtc_int1_init(void)
   GICR |= (1<<INT1);
 }
 
-void rtc_set_time_part(uint8_t part, uint8_t value) 
+void rtc_set_clock_part(uint8_t part, uint8_t value) 
 {  
   uint8_t bcd = DEC_2_BCD(value);
   i2c_writebuf(RTC_I2C_ADDR, part, 1, &bcd);
 }
 
-void rtc_set_time(struct TIME_HMS* time)
+void rtc_set_clock(struct TIME_HMS* time)
 {  
   uint8_t buf[] = { DEC_2_BCD(time->second), DEC_2_BCD(time->minute), DEC_2_BCD(time->hour) };
   i2c_writebuf(RTC_I2C_ADDR, SECOND, 3, buf); // SECOND is the first memory cell (0x02)
 }
 
-struct TIME_HMS rtc_read_time(void) 
+void rtc_update_clock(void) 
 {
   uint8_t buffer[3];
   i2c_readbuf(RTC_I2C_ADDR, 0x02, 3, buffer);
 
-  struct TIME_HMS curr_time = {
-    BCD_2_DEC(buffer[2]),
-    BCD_2_DEC(buffer[1]),
-    BCD_2_DEC(buffer[0])
-  };
-
-  return curr_time;
+  clock.hour = BCD_2_DEC(buffer[2]);
+  clock.minute = BCD_2_DEC(buffer[1]);
+  clock.second = BCD_2_DEC(buffer[0]);
 }
 
-uint8_t rtc_handle_timer(void)
+uint8_t rtc_handle_clock(void)
 {
   if(!(GIFR & (1<<INTF0)))
   {
-    time = rtc_read_time();
+    rtc_update_clock();
     GIFR |= 1<<INTF0;
     return 1;
   }

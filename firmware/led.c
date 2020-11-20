@@ -48,15 +48,15 @@ ISR(TIMER0_OVF_vect)
   switch(curr_anode) 
   {
     case 1: 
-      LED_PORT = ~time.hour;   
+      LED_PORT = ~clock.hour;   
       ANODES_PORT = led_btnes >= pwm_counter ? ~HOUR_ANODE : 0xFF;
       break;
     case 2: 
-      LED_PORT = ~time.minute;   
+      LED_PORT = ~clock.minute;   
       ANODES_PORT = led_btnes >= pwm_counter ? ~MINUTE_ANODE : 0xFF;  
       break;
     case 4: 
-      LED_PORT = ~time.second;
+      LED_PORT = ~clock.second;
       ANODES_PORT = led_btnes >= pwm_counter ? ~SECOND_ANODE : 0xFF; 
       break;
   }
