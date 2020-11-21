@@ -1,16 +1,20 @@
 #include <avr/interrupt.h>
+#include <avr/pgmspace.h>
 #include <avr/io.h>
-#include <stdlib.h>
 #include "rtc.h"
 #include "i2c.h"
 
 #define DEC_2_BCD(dec) ((((dec) / 10) << 4) | ((dec) % 10))
 #define BCD_2_DEC(bcd) (((((bcd) >> 4) & 0x0F) * 10) + ((bcd) & 0x0F))
 
+static const uint16_t days_of_month[] PROGMEM = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
+static const char weekday_strings[] PROGMEM = { "mon" "\x00" "tue" "\x00" "wed" "\x00" "thu" "\x00" "fri" "\x00" "sat" "\x00" "sun" };
+
 static volatile struct RTC_DATA clock;
 static void (*rtc_handler)(struct RTC_DATA* clock);
 
 void rtc_read_datetime(struct RTC_DATA* data);
+uint8_t eval_weekday(struct DATE_YMD* date);
 
 void rtc_int0_init(void)
 {
@@ -35,7 +39,7 @@ void rtc_set_time(struct TIME_HMS* time)
 void rtc_set_date(struct DATE_YMD* date)
 {
   clock.buffer[3] = ((date->year & 0x03) << 6) | DEC_2_BCD(date->day);
-  clock.buffer[4] = DEC_2_BCD(date->month);  
+  clock.buffer[4] = (eval_weekday(date) << 5) | DEC_2_BCD(date->month);  
   i2c_writebuf(RTC_I2C_ADDR, 0x05, 2, &clock.buffer[3]);
   i2c_writebuf(RTC_I2C_ADDR, 0x10, 2, (uint8_t*) &date->year);
 }
@@ -122,5 +126,26 @@ void rtc_read_datetime(struct RTC_DATA* data)
   *(curr_char++) = (data->buffer[4] & 0x0F) + '0';
   *(curr_char++) = DATE_SEPARATOR;
   itoa(data->date.year, curr_char, 10);
-  *(curr_char+4) = 0;
+  *(curr_char+4) = 0;  
+
+  // data->weekday_str
+  strcpy_P(&data->weekday_str, weekday_strings + data->date.weekday * 4);
+}
+
+uint8_t eval_weekday(struct DATE_YMD* date)
+{
+  uint16_t yy = (date->year-1) % 100;
+  uint16_t c = (date->year-1) - yy;
+  uint16_t g = yy + yy/4;
+  
+  uint16_t jan1 = c / 10;
+  jan1 %= 4;
+  jan1 *= 5;
+  jan1 += g;
+  jan1 %= 7;
+
+  uint16_t day_of_year = pgm_read_word(&days_of_month[date->month-1]) + date->day;
+  if(!(date->year & 0x03) && date->month > 3) ++day_of_year;
+
+  return (jan1 + day_of_year - 1) % 7;
 }

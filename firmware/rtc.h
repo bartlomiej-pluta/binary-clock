@@ -24,6 +24,7 @@ struct RTC_DATA
   struct DATE_YMDW date;
   char time_str[9];
   char date_str[11];
+  char weekday_str[4];  
   uint8_t buffer[5];
 };
 

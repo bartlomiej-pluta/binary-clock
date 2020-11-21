@@ -12,7 +12,7 @@
 #include "time.h"
 #include "led.h"
 
-#define PROJ_STR __PROJ_NAME " " __PROJ_REV " ::: " __PROJ_AUTHOR " " __PROJ_DATE
+#define PROJ_STR __PROJ_NAME  __PROJ_REV " ::: " __PROJ_AUTHOR  __PROJ_DATE
 
 #define UNUSED(X) (void)(X)
 
@@ -107,8 +107,8 @@ int8_t cmd_ati_handler(uint8_t mode, char* arg)
   if(mode != M_NORM) return -1;
 
   uart_puts_P(PSTR(PROJ_STR "\r\n"));
-  uart_puts_P(PSTR("compilation " __DATE__ " " __TIME__ "\n\r"));
-  uart_puts_P(PSTR("avr-libc v" __AVR_LIBC_VERSION_STRING__ " " __AVR_LIBC_DATE_STRING__ "\n\r"));
+  uart_puts_P(PSTR("compilation " __DATE__  __TIME__ "\n\r"));
+  uart_puts_P(PSTR("avr-libc v" __AVR_LIBC_VERSION_STRING__  __AVR_LIBC_DATE_STRING__ "\n\r"));
 
   return 0;
 }
@@ -182,6 +182,8 @@ int8_t cmd_at_dat_handler(uint8_t mode, char* arg)
   {
     case M_GET:      
       uart_puts(rtc_data->date_str);
+      uart_putc(' ');
+      uart_puts(rtc_data->weekday_str);
       uart_puts("\n\r");
       break;
     
