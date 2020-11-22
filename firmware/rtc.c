@@ -1,6 +1,7 @@
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <avr/io.h>
+#include <stdlib.h>
 #include "rtc.h"
 #include "i2c.h"
 
@@ -15,12 +16,15 @@ static void (*rtc_handler)(struct RTC_DATA* clock);
 
 void rtc_read_datetime(struct RTC_DATA* data);
 uint8_t eval_weekday(struct DATE_YMD* date);
+void rtc_invoke_handler(void);
 
 void rtc_int0_init(void)
 {
   MCUCR |= (1<<ISC01);
   INT0_DIR &= ~(1<<INT0_PIN);
   INT0_PORT |= (1<<INT0_PIN);  
+
+  rtc_invoke_handler();
 }
 
 void rtc_bind_handler(void (*handler)(struct RTC_DATA* clock))
@@ -33,15 +37,17 @@ void rtc_set_time(struct TIME_HMS* time)
   clock.buffer[0] = DEC_2_BCD(time->second);
   clock.buffer[1] = DEC_2_BCD(time->minute);
   clock.buffer[2] = DEC_2_BCD(time->hour);
-  i2c_writebuf(RTC_I2C_ADDR, 0x02, 3, &clock.buffer);
+  i2c_writebuf(RTC_I2C_ADDR, 0x02, 3, (uint8_t*) &clock.buffer);
+  rtc_invoke_handler();
 }
 
 void rtc_set_date(struct DATE_YMD* date)
 {
   clock.buffer[3] = ((date->year & 0x03) << 6) | DEC_2_BCD(date->day);
   clock.buffer[4] = (eval_weekday(date) << 5) | DEC_2_BCD(date->month);  
-  i2c_writebuf(RTC_I2C_ADDR, 0x05, 2, &clock.buffer[3]);
+  i2c_writebuf(RTC_I2C_ADDR, 0x05, 2, (uint8_t*) &clock.buffer[3]);
   i2c_writebuf(RTC_I2C_ADDR, 0x10, 2, (uint8_t*) &date->year);
+  rtc_invoke_handler();
 }
 
 void rtc_inc_time(uint8_t part)
@@ -64,7 +70,7 @@ void rtc_inc_time(uint8_t part)
 
   clock.buffer[0] = DEC_2_BCD(clock.buffer[0]);
 
-  i2c_writebuf(RTC_I2C_ADDR, part, 1, &clock.buffer);
+  i2c_writebuf(RTC_I2C_ADDR, part, 1, (uint8_t*) &clock.buffer);
   rtc_invoke_handler();
 }
 
@@ -72,8 +78,8 @@ void rtc_invoke_handler(void)
 {
   if(rtc_handler)
   {
-    rtc_read_datetime(&clock);
-    rtc_handler(&clock);
+    rtc_read_datetime((struct RTC_DATA*) &clock);
+    rtc_handler((struct RTC_DATA*) &clock);
   }   
 }
 
@@ -88,10 +94,10 @@ void rtc_handle_event(void)
 
 void rtc_read_datetime(struct RTC_DATA* data)
 {
-  i2c_readbuf(RTC_I2C_ADDR, 0x02, 5, data->buffer);
+  i2c_readbuf(RTC_I2C_ADDR, 0x02, 5, (uint8_t*) data->buffer);
   i2c_readbuf(RTC_I2C_ADDR, 0x10, 2, (uint8_t*) &(data->date.year));
   
-  char* curr_char = data->time_str;
+  char* curr_char = (char*) data->time_str;
   for(uint8_t i=0; i<3; ++i)
   {        
     // data->time_str
@@ -118,7 +124,7 @@ void rtc_read_datetime(struct RTC_DATA* data)
   data->date.weekday = data->buffer[4] >> 5;  
 
   // data->date_str
-  curr_char = data->date_str;    
+  curr_char = (char*) data->date_str;    
   *(curr_char++) = ((data->buffer[3] & 0x3F) >> 4) + '0';
   *(curr_char++) = (data->buffer[3] & 0x0F) + '0';
   *(curr_char++) = DATE_SEPARATOR;
@@ -129,7 +135,7 @@ void rtc_read_datetime(struct RTC_DATA* data)
   *(curr_char+4) = 0;  
 
   // data->weekday_str
-  strcpy_P(&data->weekday_str, weekday_strings + data->date.weekday * 4);
+  strcpy_P((char*) &data->weekday_str, weekday_strings + data->date.weekday * 4);
 }
 
 uint8_t eval_weekday(struct DATE_YMD* date)
