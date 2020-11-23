@@ -4,6 +4,7 @@
 #include "ptimer.h"
 #include "config.h"
 #include "nightm.h"
+#include "buzzer.h"
 #include "time.h"
 #include "uart.h"
 #include "i2c.h"
@@ -24,6 +25,7 @@ int main()
   rtc_int0_init();
   led_init();
   uart_init();
+  buz_init();
   
   uart_bind_handler(at_handler);
   rtc_bind_handler(update_time);
@@ -39,6 +41,7 @@ int main()
     kbd_handle_event();
     uart_handle_event(uart_buf);
     rtc_handle_event();    
+    buz_handle_event();
   }
 }
 

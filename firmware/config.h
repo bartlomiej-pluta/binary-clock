@@ -7,6 +7,7 @@
 
 #define AUTO_BTNES_SIZE 4
 
+#define BUZ_EN 1
 #define LED_BRIGHTNESS 7
 #define NIGHT_MODE { -1, { 0, 0 }, { 0, 0 } }
 
@@ -19,6 +20,7 @@ struct NIGHTM_CFG
 
 struct CFG
 {
+  uint8_t buz_en;
   uint8_t led_btnes;
   struct NIGHTM_CFG night_mode;
 };

@@ -3,6 +3,7 @@
 struct CFG ram_cfg;
 struct CFG eem_cfg EEMEM;
 const struct CFG pgm_cfg PROGMEM = {
+  BUZ_EN,
   LED_BRIGHTNESS,
   NIGHT_MODE
 };

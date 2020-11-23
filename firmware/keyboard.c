@@ -2,6 +2,7 @@
 #include "common.h"
 #include "config.h"
 #include "keyboard.h"
+#include "buzzer.h"
 #include "debounce.h"
 #include "rtc.h"
 #include "led.h"
@@ -9,25 +10,29 @@
 uint8_t k_inc_hour, k_inc_minute, k_inc_second, k_inc_brightness;
 
 void inc_hour(void)
-{
+{  
   rtc_inc_time(HOUR);
+  buz_on();
 }
 
 void inc_minute(void)
-{
+{  
   rtc_inc_time(MINUTE);
+  buz_on();
 }
 
 void inc_second(void)
-{
+{  
   rtc_inc_time(SECOND);
+  buz_on();
 }
 
 void inc_brightness(void)
-{
+{  
   if(++ram_cfg.led_btnes > 7) ram_cfg.led_btnes = 0;
   led_set_btnes(ram_cfg.led_btnes);
   dump_ram2eem();
+  buz_on();
 }
 
 void kbd_init(void)

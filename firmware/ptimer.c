@@ -3,10 +3,12 @@
 #include "ptimer.h"
 
 volatile uint16_t tim_debounce;
+volatile uint8_t tim_buz;
 
 void ptimer_init(void)
 {
   tim_debounce = 0;
+  tim_buz = 0;
 
   TCCR2 |= (1<<WGM21);
   TCCR2 |= (1<<CS22) | (1<<CS21) | (1<<CS20);
@@ -18,4 +20,5 @@ void ptimer_init(void)
 ISR(TIMER2_COMP_vect)
 {
   if(tim_debounce) --tim_debounce;  
+  if(tim_buz) --tim_buz;
 }

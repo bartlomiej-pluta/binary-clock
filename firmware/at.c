@@ -23,16 +23,18 @@ int8_t cmd_at_tim_handler(uint8_t mode, char* arg);
 int8_t cmd_at_dat_handler(uint8_t mode, char* arg);
 int8_t cmd_at_bts_handler(uint8_t mode, char* arg);
 int8_t cmd_at_ngt_handler(uint8_t mode, char* arg);
+int8_t cmd_at_buz_handler(uint8_t mode, char* arg);
 
-#define AT_NUM 7
+#define AT_NUM 8
 const struct AT_CMD at_commands[AT_NUM] PROGMEM = {
-  { "AT",     cmd_at_handler      },
-  { "ATI",    cmd_ati_handler     },
-  { "AT+RST", cmd_at_rst_handler  },
-  { "AT+TIM", cmd_at_tim_handler  },
-  { "AT+DAT", cmd_at_dat_handler  },
-  { "AT+BTS", cmd_at_bts_handler  },
-  { "AT+NGT", cmd_at_ngt_handler  }
+  { "AT",     cmd_at_handler     },
+  { "ATI",    cmd_ati_handler    },
+  { "AT+RST", cmd_at_rst_handler },
+  { "AT+TIM", cmd_at_tim_handler },
+  { "AT+DAT", cmd_at_dat_handler },
+  { "AT+BTS", cmd_at_bts_handler },
+  { "AT+NGT", cmd_at_ngt_handler },
+  { "AT+BUZ", cmd_at_buz_handler }
 };
 
 static struct RTC_DATA* rtc_data;
@@ -315,6 +317,36 @@ int8_t cmd_at_ngt_handler(uint8_t mode, char* arg)
 
     case M_NORM:
       uart_puts_P(PSTR("AT+NGT=(-1|0-7),(0-23),(0-59),(0-23),(0-59)\n\r"));
+  }
+
+  return 0;
+}
+
+int8_t cmd_at_buz_handler(uint8_t mode, char* arg)
+{       
+  uint8_t buz_en;
+
+  switch(mode)
+  {
+    case M_GET:
+      uart_puti(ram_cfg.buz_en, 10);
+      uart_puts("\n\r");
+      break;
+
+    case M_SET:
+      if(!strlen(arg)) return -1;
+      
+      buz_en = atoi(arg);
+      if(buz_en != 0 && buz_en != 1) return -1;
+      ram_cfg.buz_en = buz_en;
+      dump_ram2eem();
+      uart_puts_P(PSTR("+BUZ="));
+      uart_puti(buz_en, 10);
+      uart_puts("\n\r");
+      break;
+
+    case M_NORM:
+      uart_puts_P(PSTR("AT+BUZ=(0|1)\n\r"));
   }
 
   return 0;
