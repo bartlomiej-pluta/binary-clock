@@ -2,6 +2,7 @@
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <stdlib.h>
+#include "common.h"
 #include "rtc.h"
 #include "i2c.h"
 
@@ -21,8 +22,8 @@ void rtc_invoke_handler(void);
 void rtc_int0_init(void)
 {
   MCUCR |= (1<<ISC01);
-  INT0_DIR &= ~(1<<INT0_PIN);
-  INT0_PORT |= (1<<INT0_PIN);  
+  R_DDR(INT0_PORT) &= ~(1<<INT0_IN);
+  R_PORT(INT0_PORT) |= (1<<INT0_IN);  
 
   rtc_invoke_handler();
 }

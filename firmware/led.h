@@ -1,14 +1,12 @@
 #ifndef __LED_H__
 #define __LED_H__
 
-#define LED_PORT PORTA
-#define LED_DIR DDRA
+#define LED_PORT A
 
-#define ANODES_PORT PORTD
-#define ANODES_DIR DDRD
-#define DIG0_ANODE (1<<PD5)
-#define DIG1_ANODE (1<<PD6)
-#define DIG2_ANODE (1<<PD7)
+#define ANODES_PORT D
+#define DIG0_ANODE 5
+#define DIG1_ANODE 6
+#define DIG2_ANODE 7
 
 struct LED_DIGS
 {

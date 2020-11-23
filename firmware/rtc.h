@@ -7,12 +7,8 @@
 
 #define DATE_SEPARATOR '.'
 
-#define INT0_PORT PORTD
-#define INT0_DIR DDRD
-#define INT0_PIN PD2
-#define INT1_PORT PORTD
-#define INT1_DIR DDRD
-#define INT1_PIN PD3
+#define INT0_PORT D
+#define INT0_IN 2
 
 #define SECOND 0x02
 #define MINUTE 0x03

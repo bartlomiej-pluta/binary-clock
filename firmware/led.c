@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "common.h"
 #include "config.h"
 #include "led.h"
 
@@ -10,12 +11,12 @@ static struct LED_DIGS display;
 void led_init(void) 
 {
   // Set outputs
-  ANODES_DIR |= DIG0_ANODE | DIG1_ANODE | DIG2_ANODE; 
-  LED_DIR |= 0x3F; // 0b00111111
+  R_DDR(ANODES_PORT) |= 1<<DIG0_ANODE | 1<<DIG1_ANODE | 1<<DIG2_ANODE; 
+  R_DDR(LED_PORT) |= 0x3F; // 0b00111111
 
   // Clear LEDs
-  ANODES_PORT = DIG0_ANODE | DIG1_ANODE | DIG2_ANODE;
-  LED_PORT |= 0x3F; // 0b00111111
+  R_PORT(ANODES_PORT) = 1<<DIG0_ANODE | 1<<DIG1_ANODE | 1<<DIG2_ANODE;
+  R_PORT(LED_PORT) |= 0x3F; // 0b00111111
   
   TCCR0 |= (1<<CS00);
   TIMSK |= (1<<TOIE0);
@@ -41,16 +42,16 @@ ISR(TIMER0_OVF_vect)
   switch(curr_anode) 
   {
     case 1: 
-      LED_PORT = ~display.dig0;   
-      ANODES_PORT = led_btnes >= pwm_counter ? ~DIG0_ANODE : 0xFF;
+      R_PORT(LED_PORT) = ~display.dig0;   
+      R_PORT(ANODES_PORT) = led_btnes >= pwm_counter ? ~(1<<DIG0_ANODE) : 0xFF;
       break;
     case 2: 
-      LED_PORT = ~display.dig1;   
-      ANODES_PORT = led_btnes >= pwm_counter ? ~DIG1_ANODE : 0xFF;  
+      R_PORT(LED_PORT) = ~display.dig1;   
+      R_PORT(ANODES_PORT) = led_btnes >= pwm_counter ? ~(1<<DIG1_ANODE) : 0xFF;  
       break;
     case 4: 
-      LED_PORT = ~display.dig2;
-      ANODES_PORT = led_btnes >= pwm_counter ? ~DIG2_ANODE : 0xFF; 
+      R_PORT(LED_PORT) = ~display.dig2;      
+      R_PORT(ANODES_PORT) = led_btnes >= pwm_counter ? ~(1<<DIG2_ANODE) : 0xFF; 
       break;
   }
 

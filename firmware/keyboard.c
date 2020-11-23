@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include "common.h"
 #include "config.h"
 #include "keyboard.h"
 #include "debounce.h"
@@ -31,14 +32,14 @@ void inc_brightness(void)
 
 void kbd_init(void)
 {
-  KEYBOARD_DIR &= ~(KEY_INC_HOUR | KEY_INC_MINUTE | KEY_INC_SECOND | KEY_INC_BRIGHTNESS);
-  PORTB |= KEY_INC_HOUR | KEY_INC_MINUTE | KEY_INC_SECOND | KEY_INC_BRIGHTNESS;
+  R_DDR(KEYBOARD_PORT) &= ~(1<<KEY_INC_HOUR | 1<<KEY_INC_MINUTE | 1<<KEY_INC_SECOND | 1<<KEY_INC_BRIGHTNESS);
+  R_PORT(KEYBOARD_PORT) |= 1<<KEY_INC_HOUR | 1<<KEY_INC_MINUTE | 1<<KEY_INC_SECOND | 1<<KEY_INC_BRIGHTNESS;
 }
 
 void kbd_handle_event(void)
 {
-  SuperDebounce(&k_inc_hour, &KEYBOARD_PIN, KEY_INC_HOUR, 20, 0, &inc_hour, 0);
-  SuperDebounce(&k_inc_minute, &KEYBOARD_PIN, KEY_INC_MINUTE, 20, 0, &inc_minute, 0);
-  SuperDebounce(&k_inc_second, &KEYBOARD_PIN, KEY_INC_SECOND, 20, 0, &inc_second, 0);
-  SuperDebounce(&k_inc_brightness, &KEYBOARD_PIN, KEY_INC_BRIGHTNESS, 20, 0, &inc_brightness, 0);
+  SuperDebounce(&k_inc_hour, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_HOUR, 20, 0, &inc_hour, 0);
+  SuperDebounce(&k_inc_minute, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_MINUTE, 20, 0, &inc_minute, 0);
+  SuperDebounce(&k_inc_second, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_SECOND, 20, 0, &inc_second, 0);
+  SuperDebounce(&k_inc_brightness, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_BRIGHTNESS, 20, 0, &inc_brightness, 0);
 }
