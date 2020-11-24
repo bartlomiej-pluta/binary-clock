@@ -1088,7 +1088,7 @@ U 1 1 5FBF376B
 P 9850 5350
 F 0 "J2" H 9930 5342 50  0000 L CNN
 F 1 "UART" H 9930 5251 50  0000 L CNN
-F 2 "Connector_PinHeader_1.27mm:PinHeader_1x04_P1.27mm_Vertical" H 9850 5350 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 9850 5350 50  0001 C CNN
 F 3 "~" H 9850 5350 50  0001 C CNN
 	1    9850 5350
 	1    0    0    -1  
@@ -1310,7 +1310,7 @@ U 1 1 5FB89BAD
 P 3750 6000
 F 0 "D1" V 3750 5920 50  0000 R CNN
 F 1 "D_Schottky" V 3705 5920 50  0001 R CNN
-F 2 "Diode_SMD:D_SOD-523" H 3750 6000 50  0001 C CNN
+F 2 "Diode_SMD:D_2114_3652Metric" H 3750 6000 50  0001 C CNN
 F 3 "~" H 3750 6000 50  0001 C CNN
 	1    3750 6000
 	0    -1   -1   0   
@@ -1434,7 +1434,7 @@ U 1 1 5FC76645
 P 2550 7200
 F 0 "JP1" H 2550 7331 50  0000 C CNN
 F 1 "TWI_ADDR" H 2550 7422 50  0000 C CNN
-F 2 "Connector_PinHeader_1.27mm:PinHeader_1x03_P1.27mm_Horizontal" H 2550 7200 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal" H 2550 7200 50  0001 C CNN
 F 3 "~" H 2550 7200 50  0001 C CNN
 	1    2550 7200
 	-1   0    0    1   
@@ -1445,7 +1445,7 @@ U 1 1 5FC97851
 P 9800 1350
 F 0 "JP2" H 9800 1585 50  0000 C CNN
 F 1 "S_EN" H 9800 1494 50  0000 C CNN
-F 2 "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Vertical" H 9800 1350 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9800 1350 50  0001 C CNN
 F 3 "~" H 9800 1350 50  0001 C CNN
 	1    9800 1350
 	1    0    0    -1  
@@ -1674,7 +1674,7 @@ U 1 1 60111879
 P 10600 5400
 F 0 "J3" H 10680 5442 50  0000 L CNN
 F 1 "COM/TW" H 10680 5351 50  0000 L CNN
-F 2 "Connector_PinHeader_1.27mm:PinHeader_1x09_P1.27mm_Vertical" H 10600 5400 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x09_P2.54mm_Vertical" H 10600 5400 50  0001 C CNN
 F 3 "~" H 10600 5400 50  0001 C CNN
 	1    10600 5400
 	1    0    0    -1  
