@@ -43,8 +43,8 @@ void kbd_init(void)
 
 void kbd_handle_event(void)
 {
-  SuperDebounce(&k_inc_hour, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_HOUR, 20, 0, &inc_hour, 0);
-  SuperDebounce(&k_inc_minute, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_MINUTE, 20, 0, &inc_minute, 0);
-  SuperDebounce(&k_inc_second, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_SECOND, 20, 0, &inc_second, 0);
-  SuperDebounce(&k_inc_brightness, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_BRIGHTNESS, 20, 0, &inc_brightness, 0);
+  SuperDebounce(&k_inc_hour, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_HOUR, 20, 50, &inc_hour, &inc_hour);
+  SuperDebounce(&k_inc_minute, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_MINUTE, 20, 50, &inc_minute, &inc_minute);
+  SuperDebounce(&k_inc_second, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_SECOND, 20, 50, &inc_second, &inc_second);
+  SuperDebounce(&k_inc_brightness, &R_PIN(KEYBOARD_PORT), 1<<KEY_INC_BRIGHTNESS, 20, 50, &inc_brightness, &inc_brightness);
 }
