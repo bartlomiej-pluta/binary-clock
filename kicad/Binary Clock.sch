@@ -686,12 +686,12 @@ Wire Notes Line
 $Comp
 L MCU_Microchip_ATmega:ATmega32A-PU U1
 U 1 1 5FCFC43A
-P 1600 3000
-F 0 "U1" H 2050 4950 50  0000 C CNN
-F 1 "ATmega32A-PU" H 1950 1050 50  0000 C CNN
-F 2 "Package_QFP:TQFP-44-1EP_10x10mm_P0.8mm_EP4.5x4.5mm" H 1600 3000 50  0001 C CIN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8155-8-bit-microcontroller-avr-atmega32a_datasheet.pdf" H 1600 3000 50  0001 C CNN
-	1    1600 3000
+P -2800 3050
+F 0 "U1" H -2350 5000 50  0000 C CNN
+F 1 "ATmega32A-PU" H -2450 1100 50  0000 C CNN
+F 2 "Package_QFP:TQFP-44-1EP_10x10mm_P0.8mm_EP4.5x4.5mm" H -2800 3050 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8155-8-bit-microcontroller-avr-atmega32a_datasheet.pdf" H -2800 3050 50  0001 C CNN
+	1    -2800 3050
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -1687,6 +1687,17 @@ F 1 "Q_NPN_BEC" H 4841 1455 50  0001 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 4850 1600 50  0001 C CNN
 F 3 "~" H 4650 1500 50  0001 C CNN
 	1    4650 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L MCU_Microchip_ATmega:ATmega32-16AU U3
+U 1 1 5FCC875C
+P 1600 3000
+F 0 "U3" H 2050 4950 50  0000 C CNN
+F 1 "ATmega32-16AU" H 2050 1050 50  0000 C CNN
+F 2 "Package_QFP:TQFP-44_10x10mm_P0.8mm" H 1600 3000 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/doc2503.pdf" H 1600 3000 50  0001 C CNN
+	1    1600 3000
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
