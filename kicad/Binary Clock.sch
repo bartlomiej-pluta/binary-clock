@@ -683,17 +683,6 @@ F 3 "" H 850 850 50  0001 C CNN
 $EndComp
 Wire Notes Line
 	550  550  550  5350
-$Comp
-L MCU_Microchip_ATmega:ATmega32A-PU U1
-U 1 1 5FCFC43A
-P -2800 3050
-F 0 "U1" H -2350 5000 50  0000 C CNN
-F 1 "ATmega32A-PU" H -2450 1100 50  0000 C CNN
-F 2 "Package_QFP:TQFP-44-1EP_10x10mm_P0.8mm_EP4.5x4.5mm" H -2800 3050 50  0001 C CIN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8155-8-bit-microcontroller-avr-atmega32a_datasheet.pdf" H -2800 3050 50  0001 C CNN
-	1    -2800 3050
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	2200 2200 2600 2200
 Wire Wire Line
@@ -1071,15 +1060,15 @@ Wire Wire Line
 Wire Wire Line
 	2200 3700 2600 3700
 Text Label 2600 3300 2    39   ~ 0
-COM0
+C0
 Text Label 2600 3400 2    39   ~ 0
-COM1
+C1
 Text Label 2600 3500 2    39   ~ 0
-COM2
+C2
 Text Label 2600 3600 2    39   ~ 0
-COM3
+C3
 Text Label 2600 3700 2    39   ~ 0
-COM4
+C4
 Wire Wire Line
 	9650 5350 9550 5350
 Wire Wire Line
@@ -1141,13 +1130,13 @@ F 3 "" H 10350 5850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text Label 10250 5700 0    39   ~ 0
-COM4
+C4
 Text Label 10250 5600 0    39   ~ 0
-COM3
+C3
 Text Label 10250 5500 0    39   ~ 0
-COM2
+C2
 Text Label 10250 5400 0    39   ~ 0
-COM1
+C1
 Wire Wire Line
 	10350 5000 10350 4950
 Wire Wire Line
@@ -1165,7 +1154,7 @@ Wire Wire Line
 Wire Wire Line
 	10400 5400 10250 5400
 Text Label 10250 5300 0    39   ~ 0
-COM0
+C0
 Wire Wire Line
 	10250 5300 10400 5300
 Wire Notes Line
@@ -1187,18 +1176,18 @@ SDA
 $Comp
 L power:VCC #PWR?
 U 1 1 5FBF53FA
-P 2900 7100
-F 0 "#PWR?" H 2900 6950 50  0001 C CNN
-F 1 "VCC" H 2915 7273 50  0000 C CNN
-F 2 "" H 2900 7100 50  0001 C CNN
-F 3 "" H 2900 7100 50  0001 C CNN
-	1    2900 7100
+P 3050 7100
+F 0 "#PWR?" H 3050 6950 50  0001 C CNN
+F 1 "VCC" H 3065 7273 50  0000 C CNN
+F 2 "" H 3050 7100 50  0001 C CNN
+F 3 "" H 3050 7100 50  0001 C CNN
+	1    3050 7100
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2900 7200 2900 7100
+	3050 7200 3050 7100
 Wire Wire Line
-	2800 7200 2900 7200
+	2800 7200 3050 7200
 Wire Wire Line
 	1900 7200 1900 7300
 Connection ~ 1900 7200
@@ -1618,8 +1607,6 @@ Wire Notes Line
 	4700 4300 4700 2250
 Wire Notes Line
 	4600 2250 4600 5350
-Wire Notes Line
-	4700 4400 4700 7700
 Text Label 3400 3200 2    39   ~ 0
 SDA
 Text Label 3400 3100 2    39   ~ 0
@@ -1629,7 +1616,7 @@ L Connector_Generic:Conn_01x09 J3
 U 1 1 60111879
 P 10600 5400
 F 0 "J3" H 10680 5442 50  0000 L CNN
-F 1 "COM/TW" H 10680 5351 50  0000 L CNN
+F 1 "COM/TWI" H 10680 5351 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x09_P2.54mm_Vertical" H 10600 5400 50  0001 C CNN
 F 3 "~" H 10600 5400 50  0001 C CNN
 	1    10600 5400
@@ -1690,14 +1677,38 @@ F 3 "~" H 4650 1500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L MCU_Microchip_ATmega:ATmega32-16AU U3
+L MCU_Microchip_ATmega:ATmega32-16AU U1
 U 1 1 5FCC875C
 P 1600 3000
-F 0 "U3" H 2050 4950 50  0000 C CNN
+F 0 "U1" H 2050 4950 50  0000 C CNN
 F 1 "ATmega32-16AU" H 2050 1050 50  0000 C CNN
 F 2 "Package_QFP:TQFP-44_10x10mm_P0.8mm" H 1600 3000 50  0001 C CIN
 F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/doc2503.pdf" H 1600 3000 50  0001 C CNN
 	1    1600 3000
 	1    0    0    -1  
 $EndComp
+Text Notes 5700 650  0    39   ~ 0
+LED Display
+Text Notes 4750 4500 0    39   ~ 0
+AVR ISP
+Text Notes 600  5550 0    39   ~ 0
+Real Time Clock
+Text Notes 4750 6250 0    39   ~ 0
+Power Supply
+Text Notes 7050 4500 0    39   ~ 0
+Keyboard
+Text Notes 9350 4500 0    39   ~ 0
+AUX interfaces
+Text Notes 3050 650  0    39   ~ 0
+Microcontroller
+Text Notes 3700 650  0    39   ~ 0
+Buzzer
+Text Notes 2250 7200 0    39   ~ 0
+0xA2
+Text Notes 2700 7200 0    39   ~ 0
+0xA0
+Wire Notes Line
+	4700 4400 4700 6050
+Wire Notes Line
+	4700 6150 4700 7700
 $EndSCHEMATC
